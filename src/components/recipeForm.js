@@ -1,8 +1,9 @@
 import React from 'react';
-import { Icon, Button, Tooltip, Drawer, Form, Row, Col, notification } from 'antd';
+import { Icon, Button, Tooltip, Drawer, Form, Row, Col, Input, notification } from 'antd';
 import AddFormStyle from './styledComponents/addFormStyle'
 import Request from '../endpoint/request';
 import FormModalStyle from './modalTwo.style';
+import uuid from 'uuid/v1';
 
 const foodRequest = new Request();
 
@@ -20,9 +21,7 @@ class RecipeForm extends React.Component {
       prepTime: '',
       servings: '',
       directions: [],
-      directionsText: '',
       ingredients: [],
-      ingredientsText: '',
       isVisible: false,
       shouldOpenModal: SHOW_DIRECTIONS
     }
@@ -38,9 +37,10 @@ class RecipeForm extends React.Component {
   };
 
   addRequestRecipeItems = () => {
-    const { title, description, cookTime, prepTime, servings } = this.state;
+    const { title, description, cookTime, prepTime, servings, directions, ingredients } = this.state;
     try {
-      foodRequest.addRecipeItems(title, description, cookTime, prepTime, servings);
+      foodRequest.addRecipeItems(title, description, cookTime, prepTime, servings, directions, ingredients);
+      this.props.getRequestRecipeItems();
     } catch (err) {
       console.error('Error', err);
       notification.open({
@@ -55,7 +55,7 @@ class RecipeForm extends React.Component {
   };
 
   addForm = () => {
-    const { title, description, cookTime, prepTime, servings, directions, ingredients } = this.state;
+    const { title, description, cookTime, prepTime, servings } = this.state;
     return (
       <React.Fragment>
         <AddFormStyle>
@@ -158,7 +158,7 @@ class RecipeForm extends React.Component {
                   <Button
                     onClick={() => {
                       this.setState({ shouldOpenModal: SHOW_INGREDIENTS });
-                      this.handleShowModal()
+                      this.handleShowModal();
                     }}>
                     <Icon type='plus-circle' />
                   </Button>
@@ -172,19 +172,111 @@ class RecipeForm extends React.Component {
     );
   };
 
-  addingDataItems = () => {
-    let items = {};
+  handleAddIngredientInputs = () => {
+    this.setState(prevState => ({
+      ingredients: [...prevState.ingredients, { uuid: uuid(), amount: '', measurement: '', name: '' }]
+    }))
+  };
+
+  handleAddDirectionInputs = () => {
+    this.setState(prevState => ({
+      directions: [...prevState.directions, { instructions: '' }]
+    }))
+  };
+
+  handleRemoveDirectionInputs = idx => {
+    this.setState({
+      directions: this.state.directions.filter((s, sidx) => idx !== sidx)
+    });
+  };
+
+  handleRemoveIngredientsInputs = idx => {
+    this.setState({
+      ingredients: this.state.ingredients.filter((s, sidx) => idx !== sidx)
+    });
+  };
+
+  handleDirectionOnChange = idx => evt => {
+    const newDirections = this.state.directions.map((dir, sidx) => {
+      if (idx !== sidx) return dir;
+      return { ...dir, instructions: evt.target.value };
+    });
+    this.setState({ directions: newDirections });
+  };
+
+  handleIngredientsOnChange = (e) => {
+    if (['name', 'amount', 'measurement'].includes(e.target.className)) {
+      let ingredients = [...this.state.ingredients]
+      ingredients[e.target.dataset.id][e.target.className] = e.target.value
+      this.setState({ ingredients }, () => console.log(this.state.ingredients))
+    } else {
+      this.setState({ [e.target.name]: e.target.value })
+    }
   }
 
   addIngredientsForm = () => {
+    const { ingredients } = this.state;
     return (
-      <div>Ingredients</div>
+      <div>
+        <form onChange={this.handleIngredientsOnChange}>
+          {
+            ingredients.map((ing, idx) => {
+              let nameId = `name-${idx}`, amountId = `amount-${idx}`, measurementId = `measurement-${idx}`
+              return (
+                <div key={idx}>
+                  <input
+                    placeholder="Name"
+                    type='text'
+                    id={nameId}
+                    data-id={idx}
+                    value={ingredients[idx].name}
+                    className='name'
+                  />
+                  <input
+                    placeholder="Amount"
+                    type='text'
+                    id={amountId}
+                    data-id={idx}
+                    value={ingredients[idx].amount}
+                    className='amount'
+                  />
+                  <input
+                    placeholder="Measurement"
+                    type='text'
+                    id={measurementId}
+                    data-id={idx}
+                    value={ingredients[idx].measurement}
+                    className='measurement'
+                  />
+                  <Icon onClick={() => this.handleRemoveIngredientsInputs(idx)} type='minus-circle' />
+                </div>
+              )
+            })
+          }
+        </form>
+        <Icon type='plus-circle' onClick={() => this.handleAddIngredientInputs()} />
+      </div>
     )
   }
 
   addDirectionsForm = () => {
     return (
-      <div>Directions</div>
+      <div>
+        {
+          this.state.directions.map((dir, idx) => (
+            <div key={idx}>
+              <Input
+                placeholder="input"
+                type='text'
+                value={dir.instructions}
+                onChange={this.handleDirectionOnChange(idx)}
+              />
+              <Icon onClick={() => this.handleRemoveDirectionInputs(idx)} type='minus-circle' />
+            </div>
+          ))
+        }
+        <Icon type='plus-circle' onClick={() => this.handleAddDirectionInputs()} />
+      </div>
     )
   }
 
@@ -213,11 +305,11 @@ class RecipeForm extends React.Component {
   }
 
   render() {
-    const { isDrawer, isVisible, shouldOpenModal } = this.state;
+    const { isDrawer, isVisible, shouldOpenModal, directions, ingredients } = this.state;
     return (
       <React.Fragment>
         <FormModalStyle
-          title="Add Ingredients"
+          title={`Add ${shouldOpenModal}`}
           visible={!!isVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}

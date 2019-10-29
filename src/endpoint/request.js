@@ -11,9 +11,20 @@ class YummyFoods {
     }
   };
 
-  addRecipeItems = async (title, description, cookTime, prepTime, servings) => {
+  addRecipeItems = async (title, description, cookTime, prepTime, servings, directions, ingredients) => {
     try {
       const result = await axios.post(`recipes`, {
+        title, description, cookTime, prepTime, servings, postDate: Date.now(), directions, ingredients
+      });
+      return result.data;
+    } catch (err) {
+      console.log('Error: ', err);
+    }
+  };
+
+  addRecipeItems = async (title, description, cookTime, prepTime, servings) => {
+    try {
+      const result = await axios.patch(`recipes`, {
         title, description, cookTime, prepTime, servings, postDate: Date.now()
       });
       return result.data;

@@ -17,18 +17,18 @@ class Recipe extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.getRequestRecipeItems();
-  }
+  // componentDidMount() {
+  //   this.getRequestRecipeItems();
+  // }
   
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log('nextProps', nextProps);
-    console.log('nextState', nextState);
-    return (
-      JSON.stringify(nextState.recipeItems !== JSON.stringify(this.state.recipeItems))
-    )
-  };
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log('nextProps', nextProps);
+  //   console.log('nextState', nextState);
+  //   return (
+  //     JSON.stringify(nextState.recipeItems !== JSON.stringify(this.state.recipeItems))
+  //   )
+  // };
   
 
   // componentDidUpdate(prevProps, prevState) {
@@ -39,33 +39,27 @@ class Recipe extends React.Component {
   //   // }
   // }
 
-  getRequestRecipeItems = async () => {
-    try {
-      const recipeItems = await foodRequest.getRecipeItems();
-      this.setState({
-        recipeItems,
-        isLoaded: true
-      });
-    } catch (err) {
-      console.error('Error', err);
-      notification.open({
-        message: 'Something went wrong',
-        description: `Error while fetching: ${err}`
-      });
-    }
-  }
+  // getRequestRecipeItems = async () => {
+  //   try {
+  //     const recipeItems = await foodRequest.getRecipeItems();
+  //     this.setState({
+  //       recipeItems,
+  //       isLoaded: true
+  //     });
+  //   } catch (err) {
+  //     console.error('Error', err);
+  //     notification.open({
+  //       message: 'Something went wrong',
+  //       description: `Error while fetching: ${err}`
+  //     });
+  //   }
+  // }
 
   renderListView = () => {
-    const { recipeItems, isLoaded } = this.state;
+    // const { recipeItems, isLoaded } = this.state;
     return (
       <React.Fragment>
-        {
-          isLoaded ? (
-            <RecipeContent getRequestRecipeItems={this.getRequestRecipeItems} recipeItems={recipeItems} />
-          ) : (
-            <Spin size='large' style={SpinStyles} />
-          )
-        }
+        <RecipeContent />
       </React.Fragment>
     );
   };
