@@ -22,12 +22,14 @@ const links = [
     {
         path: '/recipe',
         label: 'Recipe',
-        leftIcon: 'dashboard'
+        leftIcon: 'local_dining',
+        color: '#21f3b4',
     },
     {
         path: '/special',
         label: 'Special',
-        leftIcon: 'person'
+        leftIcon: 'local_pizza',
+        color: '#f33d21',
     }
 ]
 

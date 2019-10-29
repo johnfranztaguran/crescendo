@@ -21,13 +21,13 @@ class Recipe extends React.Component {
     this.getRequestRecipeItems();
   }
 
-  componentWillUpdate(prev, next) {
-    console.log('prev ====', prev);
-    console.log('next ====', next);
-    if(this.state.recipeItems.length === next.recipeItems.length) {
-      this.getRequestRecipeItems();
-    }
-  }
+  // componentWillUpdate(prev, next) {
+  //   console.log('prev ====', prev);
+  //   console.log('next ====', next);
+  //   if(this.state.recipeItems.length === next.recipeItems.length) {
+  //     this.getRequestRecipeItems();
+  //   }
+  // }
 
   getRequestRecipeItems = async () => {
     try {

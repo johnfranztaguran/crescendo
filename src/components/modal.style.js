@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Modal } from 'antd';
 
-const BidsModalStyled = styled(Modal)`
+const ModalStyled = styled(Modal)`
   .modal-footer-extra-link {
     margin-top: 10px;
     margin-bottom: 0;
@@ -22,4 +22,4 @@ const BidsModalStyled = styled(Modal)`
   }
 `;
 
-export default BidsModalStyled;
+export default ModalStyled;

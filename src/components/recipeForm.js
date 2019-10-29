@@ -6,6 +6,9 @@ import FormModalStyle from './modalTwo.style';
 
 const foodRequest = new Request();
 
+const SHOW_INGREDIENTS = 'INGREDIENTS'
+const SHOW_DIRECTIONS = 'DIRECTIONS'
+
 class RecipeForm extends React.Component {
   constructor(props) {
     super(props);
@@ -17,8 +20,11 @@ class RecipeForm extends React.Component {
       prepTime: '',
       servings: '',
       directions: [],
+      directionsText: '',
       ingredients: [],
-      visible: false
+      ingredientsText: '',
+      isVisible: false,
+      shouldOpenModal: SHOW_DIRECTIONS
     }
   }
 
@@ -136,7 +142,12 @@ class RecipeForm extends React.Component {
             <Row gutter={16}>
               <Col span={12}>
                 <div>
-                  <Button onClick={() => this.handleShowModal('direction')}>
+                  <Button
+                    onClick={() => {
+                      this.setState({ shouldOpenModal: SHOW_DIRECTIONS });
+                      this.handleShowModal();
+                    }}
+                  >
                     <Icon type='plus-circle' />
                   </Button>
                   <p>Add Directions</p>
@@ -144,7 +155,11 @@ class RecipeForm extends React.Component {
               </Col>
               <Col span={12}>
                 <div>
-                  <Button onClick={() => this.handleShowModal('ingredients')}>
+                  <Button
+                    onClick={() => {
+                      this.setState({ shouldOpenModal: SHOW_INGREDIENTS });
+                      this.handleShowModal()
+                    }}>
                     <Icon type='plus-circle' />
                   </Button>
                   <p>Add Ingredients</p>
@@ -156,6 +171,10 @@ class RecipeForm extends React.Component {
       </React.Fragment>
     );
   };
+
+  addingDataItems = () => {
+    let items = {};
+  }
 
   addIngredientsForm = () => {
     return (
@@ -169,21 +188,16 @@ class RecipeForm extends React.Component {
     )
   }
 
-  handleShowModal = value => {
-    // if (value === 'direction') {
-    //   this.addDirectionsForm();
-    // } else {
-    //   this.addIngredientsForm();
-    // }
-    this.setState({ visible: true })
+  handleShowModal = () => {
+    this.setState({ isVisible: true })
   }
 
   handleCancel = () => {
-    this.setState({ visible: false })
+    this.setState({ isVisible: false })
   }
 
   handleOk = () => {
-    this.setState({ visible: false })
+    this.setState({ isVisible: false })
   }
   
   flushData = () => {
@@ -199,11 +213,22 @@ class RecipeForm extends React.Component {
   }
 
   render() {
-    const { isDrawer } = this.state;
+    const { isDrawer, isVisible, shouldOpenModal } = this.state;
     return (
       <React.Fragment>
-        <FormModalStyle>
-          {this.addIngredientsForm()}
+        <FormModalStyle
+          title="Add Ingredients"
+          visible={!!isVisible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          {
+            shouldOpenModal === SHOW_DIRECTIONS ? (
+              this.addDirectionsForm()
+            ) : (
+              this.addIngredientsForm()
+            )
+          }
         </FormModalStyle>
         <Drawer
           title="Add Food Recipe's"
