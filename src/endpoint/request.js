@@ -22,7 +22,7 @@ class YummyFoods {
     }
   };
 
-  addRecipeItems = async (title, description, cookTime, prepTime, servings, id) => {
+  editRecipeItems = async (title, description, cookTime, prepTime, servings, id) => {
     try {
       const result = await axios.patch(`recipes?uuid=${id}`, {
         title, description, cookTime, prepTime, servings, postDate: Date.now()

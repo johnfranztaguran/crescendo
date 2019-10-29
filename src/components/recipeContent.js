@@ -45,7 +45,7 @@ class RecipeContent extends React.Component {
   editRequestRecipeItems = () => {
     const { title, description, cookTime, prepTime, servings, directions, ingredients, specificId } = this.state;
     try {
-      foodRequest.addRecipeItems(title, description, cookTime, prepTime, servings, specificId);
+      foodRequest.editRecipeItems(title, description, cookTime, prepTime, servings, specificId);
       this.getRequestRecipeItems();
     } catch (err) {
       console.error('Error', err);
