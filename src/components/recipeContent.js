@@ -28,7 +28,8 @@ class RecipeContent extends React.Component {
       cookTime: '',
       prepTime: '',
       servings: '',
-      specificId: undefined
+      specificId: undefined,
+      specificItem: []
     }
   }
 
@@ -77,7 +78,8 @@ class RecipeContent extends React.Component {
   };
 
   editForm = () => {
-    const { title, description, cookTime, prepTime, servings } = this.state;
+    const { title, description, cookTime, prepTime, servings, specificItem } = this.state;
+    console.log('render edit ***', specificItem);
     return (
       <React.Fragment>
         <EditFormStyle>
@@ -88,8 +90,9 @@ class RecipeContent extends React.Component {
                   <div className='input-wrapper'>
                     <input
                       type="text"
+                      // value={specificItem.title}
                       value={title}
-                      placeholder="Title"
+                      placeholder={`${specificItem.title}`}
                       name='title'
                       className='search-input'
                       onChange={this.handleChange}
@@ -103,8 +106,10 @@ class RecipeContent extends React.Component {
                   <div className='input-wrapper'>
                     <input
                       type="text"
+                      // value={specificItem.description}
                       value={description}
-                      placeholder="Description"
+                      placeholder={`${specificItem.description}`}
+                      // placeholder="Description"
                       name='description'
                       className='search-input'
                       onChange={this.handleChange}
@@ -120,8 +125,10 @@ class RecipeContent extends React.Component {
                   <div className='input-wrapper'>
                     <input
                       type="text"
+                      // value={specificItem.cookTime}
                       value={cookTime}
-                      placeholder="Cook Time"
+                      placeholder={`${specificItem.cookTime}`}
+                      // placeholder="Cook Time"
                       name='cookTime'
                       className='search-input'
                       onChange={this.handleChange}
@@ -135,8 +142,10 @@ class RecipeContent extends React.Component {
                   <div className='input-wrapper'>
                     <input
                       type="text"
+                      // value={specificItem.prepTime}
                       value={prepTime}
-                      placeholder="Preparing Time"
+                      placeholder={`${specificItem.prepTime}`}
+                      // placeholder="Preparing Time"
                       name='prepTime'
                       className='search-input'
                       onChange={this.handleChange}
@@ -150,8 +159,10 @@ class RecipeContent extends React.Component {
                   <div className='input-wrapper'>
                     <input
                       type="text"
+                      // value={specificItem.servings}
                       value={servings}
-                      placeholder="Servings"
+                      placeholder={`${specificItem.servings}`}
+                      // placeholder="Servings"
                       name='servings'
                       className='search-input'
                       onChange={this.handleChange}
@@ -176,7 +187,7 @@ class RecipeContent extends React.Component {
             <div className='bottom-header'>
               <a
                 onClick={() => {
-                  this.setState({ specificId: recipes.uuid})
+                  this.setState({ specificId: recipes.uuid, specificItem: recipes })
                   this.handleShowModal();
                 }}
                 className='icon-setting'
