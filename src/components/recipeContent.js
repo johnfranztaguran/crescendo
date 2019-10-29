@@ -11,6 +11,7 @@ const { Panel } = Collapse;
 const RecipeContent = ({ recipeItems }) => {
 
   const [activePanel, setActivePanel] = useState('');
+  
 
   const renderCollapseHeader = recipes => {
     return (

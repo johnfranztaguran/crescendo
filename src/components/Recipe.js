@@ -20,13 +20,23 @@ class Recipe extends React.Component {
   componentDidMount() {
     this.getRequestRecipeItems();
   }
+  
 
-  // componentWillUpdate(prev, next) {
-  //   console.log('prev ====', prev);
-  //   console.log('next ====', next);
-  //   if(this.state.recipeItems.length === next.recipeItems.length) {
-  //     this.getRequestRecipeItems();
-  //   }
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('nextProps', nextProps);
+    console.log('nextState', nextState);
+    return (
+      JSON.stringify(nextState.recipeItems !== JSON.stringify(this.state.recipeItems))
+    )
+  };
+  
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log('prevState', prevState)
+  //   console.log('prevProps', prevProps)
+  //   // if(this.state.recipeItems !== prevState.recipeItems) {
+  //   //   this.getRequestRecipeItems();
+  //   // }
   // }
 
   getRequestRecipeItems = async () => {
@@ -51,7 +61,7 @@ class Recipe extends React.Component {
       <React.Fragment>
         {
           isLoaded ? (
-            <RecipeContent recipeItems={recipeItems} />
+            <RecipeContent getRequestRecipeItems={this.getRequestRecipeItems} recipeItems={recipeItems} />
           ) : (
             <Spin size='large' style={SpinStyles} />
           )
