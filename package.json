@@ -23,7 +23,8 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "1.1.5",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "uuid": "^3.3.3"
   },
   "scripts": {
     "start": "set PORT=4000 && react-scripts start",

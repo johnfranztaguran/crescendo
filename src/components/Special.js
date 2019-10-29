@@ -38,7 +38,7 @@ const Special = () => {
     );
   };
 
-  const renderHeader = controls => <PageHeader controls={controls}>Specials</PageHeader>;
+  const renderHeader = () => <PageHeader>Specials</PageHeader>;
 
   console.log('specials ===', specialItems);
 

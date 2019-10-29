@@ -46,6 +46,10 @@ const HeaderStyle = styled.div`
       border-color: blue;
     }
   }
+  .add-food-btn {
+    align-self: left;
+    padding: 5px;
+  }
 `;
 
 export default HeaderStyle;

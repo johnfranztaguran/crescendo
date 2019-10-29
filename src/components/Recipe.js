@@ -8,19 +8,34 @@ import CrudStyle from './crudStyle';
 
 const foodRequest = new Request();
 
-const Recipe = () => {
-  const [recipeItems, setRecipeItems] = useState([]);
-  const [isLoaded, dataLoaded] = useState(false);
+class Recipe extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      recipeItems: [],
+      isLoaded: false
+    }
+  }
 
-  useEffect(() => {
-    getRequestRecipeItems();
-  }, []);
+  componentDidMount() {
+    this.getRequestRecipeItems();
+  }
 
-  const getRequestRecipeItems = async () => {
+  componentWillUpdate(prev, next) {
+    console.log('prev ====', prev);
+    console.log('next ====', next);
+    if(this.state.recipeItems.length === next.recipeItems.length) {
+      this.getRequestRecipeItems();
+    }
+  }
+
+  getRequestRecipeItems = async () => {
     try {
       const recipeItems = await foodRequest.getRecipeItems();
-      setRecipeItems(recipeItems);
-      dataLoaded(true);
+      this.setState({
+        recipeItems,
+        isLoaded: true
+      });
     } catch (err) {
       console.error('Error', err);
       notification.open({
@@ -30,7 +45,8 @@ const Recipe = () => {
     }
   }
 
-  const renderListView = () => {
+  renderListView = () => {
+    const { recipeItems, isLoaded } = this.state;
     return (
       <React.Fragment>
         {
@@ -44,16 +60,20 @@ const Recipe = () => {
     );
   };
 
-  const renderHeader = controls => <PageHeader controls={controls}>Recipe</PageHeader>;
+  renderHeader = () => <PageHeader>Recipe</PageHeader>;
 
-  return (
-    <CrudStyle>
-      <CRUD
-        headerView={renderHeader}
-        listView={renderListView}
-      />
-    </CrudStyle>
-  );
+  render() {
+    const { recipeItems } = this.state;
+    console.log(recipeItems);
+    return (
+      <CrudStyle>
+        <CRUD
+          headerView={this.renderHeader}
+          listView={this.renderListView}
+        />
+      </CrudStyle>
+    );
+  };
 };
 
 export default Recipe;

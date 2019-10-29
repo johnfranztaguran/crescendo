@@ -1,60 +1,12 @@
 import React, { useState, Fragment } from 'react';
-import { Collapse, Col, Row, Icon, Tag, Layout, Empty, Avatar } from 'antd';
-import styled from 'styled-components';
+import { Collapse, Col, Row, Icon, Tag, Button, Avatar, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import _get from 'lodash.get';
 import RecipeTabs from './recipeTabs';
+import HeaderStyle from './styledComponents/collapseHeaderStyle';
+import RecipeForm from './recipeForm';
 
 const { Panel } = Collapse;
-const { Content } = Layout;
-
-const HeaderStyle = styled.div`
-  h4 {
-    color: #2195F3;
-    font-weight: 700;
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
-
-  h1 {
-    font-size: 11px;
-  }
-
-  .icon-setting {
-    margin-right: 15px;
-  }
-
-  .isoCustomCollapse {
-    &:hover {
-      background-color: #deedfa;
-    }
-  }
-
-  .pagination{
-    justify-content: center;
-    margin-top: 10px;
-  }
-
-  .isoPanel {
-    &:hover {
-      background-color: #faebd7
-    }
-  }
-
-  .child-header {
-    margin-top: 10px;
-  }
-  
-  .ant-empty-image {
-    margin-bottom: 0px;
-  }
-
-  li {
-    &:focus {
-      border-color: blue;
-    }
-  }
-`;
 
 const RecipeContent = ({ recipeItems }) => {
 
@@ -107,6 +59,7 @@ const RecipeContent = ({ recipeItems }) => {
   return (
     <React.Fragment>
       <HeaderStyle>
+        <RecipeForm />
         <Collapse
           expandIcon={({ isActive }) => <Icon style={{ color: 'gray'}} type="caret-right" rotate={isActive ? 90 : 0} />}
           onChange={collapseChange}
