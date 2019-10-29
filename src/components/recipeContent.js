@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Collapse, Form, Row, Col, Icon, Tag, Button, Avatar, Tooltip, notification, Spin } from 'antd';
+import { Collapse, Form, Row, Col, Icon, Tag, Avatar, notification, Spin } from 'antd';
 import PropTypes from 'prop-types';
 import _get from 'lodash.get';
 import RecipeTabs from './recipeTabs';
@@ -43,9 +43,9 @@ class RecipeContent extends React.Component {
   };
 
   editRequestRecipeItems = () => {
-    const { title, description, cookTime, prepTime, servings, directions, ingredients } = this.state;
+    const { title, description, cookTime, prepTime, servings, directions, ingredients, specificId } = this.state;
     try {
-      foodRequest.addRecipeItems(title, description, cookTime, prepTime, servings);
+      foodRequest.addRecipeItems(title, description, cookTime, prepTime, servings, specificId);
       this.getRequestRecipeItems();
     } catch (err) {
       console.error('Error', err);
@@ -161,33 +161,6 @@ class RecipeContent extends React.Component {
                 </Form.Item>
               </Col>
             </Row>
-            {/* <Row gutter={16}>
-              <Col span={12}>
-                <div>
-                  <Button
-                    onClick={() => {
-                      this.setState({ shouldOpenModal: SHOW_DIRECTIONS });
-                      this.handleShowModal();
-                    }}
-                  >
-                    <Icon type='plus-circle' />
-                  </Button>
-                  <p>Add Directions</p>
-                </div>
-              </Col>
-              <Col span={12}>
-                <div>
-                  <Button
-                    onClick={() => {
-                      this.setState({ shouldOpenModal: SHOW_INGREDIENTS });
-                      this.handleShowModal();
-                    }}>
-                    <Icon type='plus-circle' />
-                  </Button>
-                  <p>Add Ingredients</p>
-                </div>
-              </Col>
-            </Row> */}
           </Form>
         </EditFormStyle>
       </React.Fragment>
@@ -195,7 +168,6 @@ class RecipeContent extends React.Component {
   };
 
   renderCollapseHeader = recipes => {
-    
     return (
       <React.Fragment>
         <Row>
@@ -204,7 +176,6 @@ class RecipeContent extends React.Component {
             <div className='bottom-header'>
               <a
                 onClick={() => {
-                  console.log('this is header edit ===', recipes.uuid)
                   this.setState({ specificId: recipes.uuid})
                   this.handleShowModal();
                 }}
@@ -258,12 +229,12 @@ class RecipeContent extends React.Component {
   }
 
   handleOk = () => {
+    this.editRequestRecipeItems()
     this.setState({ isVisible: false })
   }
 
   render() {
-    const { isLoaded, foodItems, isVisible, specificId } = this.state;
-    console.log('id:', specificId)
+    const { isLoaded, foodItems, isVisible } = this.state;
     return (
       <React.Fragment>
         {
