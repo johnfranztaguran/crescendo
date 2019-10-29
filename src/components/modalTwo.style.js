@@ -18,7 +18,7 @@ const ModalStyled = styled(Modal)`
     border-color: ${palette('primary', 0)};
   }
   .ant-modal-body {
-    height: 330px;
+    height: 400px;
     padding-bottom: 0;
   }
   .ant-select-dropdown {
